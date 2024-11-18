@@ -1,7 +1,8 @@
 import { Text, View, Image, TextInput, Button } from "react-native";
 import { useState } from "react";
 import { BASE_URL } from "@/utils/utils";
-
+import styles from "@/styles";
+import typeColors from "./components/typecolors";
 export default function Index() {
   const [pokemonName, setPokemonName] = useState(""); 
   const [data, setData] = useState(null);
@@ -20,28 +21,42 @@ export default function Index() {
         setData(null);
       });
   };
+  
+  const getTypeColor = (type: string) => typeColors[type] || "black"; 
 
   return (
-    <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
+    <View style={styles.container}>
       <TextInput
         placeholder="Enter Pokémon Name"
         value={pokemonName}
         onChangeText={(text) => setPokemonName(text)}
+        style={styles.input}
         
       />
-      <Button title="Search" onPress={fetchInfo} />
+      <Button title="Search"  onPress={fetchInfo}  />
 
       {data ? (
         <>
-          <Text>
+          <Text style={styles.pokemonName}>
             {data.name.toUpperCase()}
           </Text>
+          {data.types.map((t, index) => (
+        <Text
+          key={index}
+          style={{
+            color: getTypeColor(t.type.name),
+            fontWeight: "bold",
+          }}
+        >
+          {t.type.name}
+        </Text>))}
+         
           <Image
             source={{ uri: data.sprites.front_default }}
-            style={{ width: 100, height: 100 }}
+            style={styles.pokemonImage}
           />
         </>
-      ) : <Text>Loading...</Text>
+      ) : <Text>Invalid Pokemon Name</Text>
 }
     </View>
   );
