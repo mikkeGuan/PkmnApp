@@ -31,6 +31,7 @@ export default function Index() {
         value={pokemonName}
         onChangeText={(text) => setPokemonName(text)}
         style={styles.input}
+        onSubmitEditing={fetchInfo}
         
       />
       <Button title="Search"  onPress={fetchInfo}  />

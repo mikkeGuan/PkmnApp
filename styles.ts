@@ -27,6 +27,11 @@ const styles = StyleSheet.create({
   pokemonName: {
     fontWeight: "bold",
     fontSize: 16,  },
+    logo: {
+      width: 100,
+      height: 100,
+      marginTop: 50,
+    }
 });
 
 export default styles;
