@@ -31,7 +31,13 @@ const styles = StyleSheet.create({
       width: 100,
       height: 100,
       marginTop: 50,
-    }
+    },
+    header: {
+      fontSize: 40, 
+      fontWeight: 'bold',
+      marginBottom: 10, 
+      color: '#c85048'
+    },
 });
 
 export default styles;

@@ -26,6 +26,7 @@ export default function Index() {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.header}>Pokemon Center</Text>
       <TextInput
         placeholder="Enter Pokémon Name"
         value={pokemonName}
