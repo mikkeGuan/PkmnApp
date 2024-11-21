@@ -68,7 +68,7 @@ export default function Index() {
 
       {data && !loading ? (
         <>
-          <Text style={styles.pokemonName}>{data.name.toUpperCase()}</Text>
+          <Text style={styles.pokemonName}>{data.name.toUpperCase()} #{data.id} </Text>
           {data.types.map((t, index) => (
             <Text
               key={index}
