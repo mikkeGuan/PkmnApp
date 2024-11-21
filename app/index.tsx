@@ -1,8 +1,8 @@
-import { Text, View, Image, TextInput, Button } from "react-native";
+import { Text, View, Image, TextInput, Button, ActivityIndicator } from "react-native";
 import { useState, useEffect } from "react";
 import { useGlobalSearchParams } from "expo-router";
 import { BASE_URL } from "@/utils/utils"; 
-import styles from "@/styles"; 
+import styles from "@/styles";
 import typeColors from "./components/typecolors";
 
 export default function Index() {
