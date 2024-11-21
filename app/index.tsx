@@ -8,12 +8,15 @@ import typeColors from "./components/typecolors";
 export default function Index() {
   const [pokemonName, setPokemonName] = useState(""); 
   const [data, setData] = useState(null);
-  const { fetchRandom } = useGlobalSearchParams(); // Using useGlobalSearchParams to access query params
+  const [loading, setLoading] = useState(false); 
+  const { fetchRandom } = useGlobalSearchParams(); 
 
   // Fetch information based on name or ID
   const fetchInfo = async (nameOrId?: string) => {
     const query = nameOrId || pokemonName.toLowerCase();
     if (!query) return;
+
+    setLoading(true); // Set loading state to true before fetching
 
     try {
       const response = await fetch(`${BASE_URL}${query}`);
@@ -23,22 +26,23 @@ export default function Index() {
     } catch (error) {
       console.error(error);
       setData(null); // Reset data in case of an error
+    } finally {
+      setLoading(false); // Reset loading state after fetch
     }
   };
 
   // Fetch a random Pokémon by generating a random ID
   const fetchRandomPokemon = async () => {
-    const randomId = Math.floor(Math.random() * 898) + 1; // Pokémon API supports IDs from 1 to 898
-    await fetchInfo(randomId.toString()); // Call fetchInfo with the random ID
+    const randomId = Math.floor(Math.random() * 898) + 1; 
+    await fetchInfo(randomId.toString()); 
   };
 
-  // Get type color for Pokémon types (assuming typeColors is a mapping)
   const getTypeColor = (type: string) => typeColors[type] || "black";
 
   // Automatically fetch random Pokémon if the 'fetchRandom' query param is set to "true"
   useEffect(() => {
     if (fetchRandom === "true") {
-      fetchRandomPokemon(); // Trigger random Pokémon fetch
+      fetchRandomPokemon(); 
     }
   }, [fetchRandom]); // Only run when 'fetchRandom' query parameter changes
 
@@ -46,18 +50,23 @@ export default function Index() {
     <View style={styles.container}>
       <Text style={styles.header}>Pokemon Center</Text>
 
-      {/* TextInput to search Pokémon by name */}
       <TextInput
         placeholder="Enter Pokémon Name"
         value={pokemonName}
         onChangeText={(text) => setPokemonName(text)}
         style={styles.input}
-        onSubmitEditing={() => fetchInfo()} // Trigger fetch on submit
+        onSubmitEditing={() => fetchInfo()} 
       />
-      <Button title="Search" onPress={() => fetchInfo()} /> {/* Search Button */}
+      <Button title="Search" onPress={() => fetchInfo()} />
 
-      {/* Display Pokémon data */}
-      {data ? (
+      {/* Display loading spinner if data is being fetched */}
+      {loading && (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+      )}
+
+      {data && !loading ? (
         <>
           <Text style={styles.pokemonName}>{data.name.toUpperCase()}</Text>
           {data.types.map((t, index) => (
@@ -71,13 +80,15 @@ export default function Index() {
               {t.type.name}
             </Text>
           ))}
-          <Image
-            source={{ uri: data.sprites.front_default }}
-            style={styles.pokemonImage}
-          />
+          <View>
+            <Image
+              source={{ uri: data.sprites.front_default }}
+              style={styles.pokemonImage}
+            />
+          </View>
         </>
       ) : (
-        <Text>Invalid Pokémon Name</Text>
+        !loading && <Text>Invalid Pokémon Name</Text>
       )}
     </View>
   );
