@@ -1,6 +1,5 @@
-import { Text, View, Image, TextInput, Button, ActivityIndicator } from "react-native";
+import { Text, View, Image, TextInput, Button, ActivityIndicator, TouchableOpacity } from "react-native";
 import { useState, useEffect } from "react";
-import { useGlobalSearchParams } from "expo-router";
 import { BASE_URL } from "@/utils/utils"; 
 import styles from "@/styles";
 import typeColors from "./components/typecolors";
@@ -8,43 +7,49 @@ import typeColors from "./components/typecolors";
 export default function Index() {
   const [pokemonName, setPokemonName] = useState(""); 
   const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(false); 
-  const { fetchRandom } = useGlobalSearchParams(); 
+  const [loading, setLoading] = useState(false);
+  const [triggerRandom, setTriggerRandom] = useState(false); 
+  const logo = require("../assets/logo.png");
 
   // Fetch information based on name or ID
   const fetchInfo = async (nameOrId?: string) => {
     const query = nameOrId || pokemonName.toLowerCase();
     if (!query) return;
 
-    setLoading(true); // Set loading state to true before fetching
+    setLoading(true); 
 
     try {
       const response = await fetch(`${BASE_URL}${query}`);
       if (!response.ok) throw new Error("Pokémon not found");
       const data = await response.json(); 
-      setData(data); // Set the fetched data in the state
+      setData(data); 
     } catch (error) {
       console.error(error);
-      setData(null); // Reset data in case of an error
+      setData(null); 
     } finally {
-      setLoading(false); // Reset loading state after fetch
+      setLoading(false); 
     }
   };
 
   // Fetch a random Pokémon by generating a random ID
   const fetchRandomPokemon = async () => {
-    const randomId = Math.floor(Math.random() * 898) + 1; 
-    await fetchInfo(randomId.toString()); 
+    const randomId = Math.floor(Math.random() * 898) + 1;
+    await fetchInfo(randomId.toString());
   };
 
   const getTypeColor = (type: string) => typeColors[type] || "black";
 
-  // Automatically fetch random Pokémon if the 'fetchRandom' query param is set to "true"
+  // Automatically fetch random Pokémon when `triggerRandom` is set to true
   useEffect(() => {
-    if (fetchRandom === "true") {
-      fetchRandomPokemon(); 
+    if (triggerRandom) {
+      fetchRandomPokemon();
+      setTriggerRandom(false); // Reset trigger
     }
-  }, [fetchRandom]); // Only run when 'fetchRandom' query parameter changes
+  }, [triggerRandom]); // Effect will re-run when `trigger` changes
+
+  const handleLogoPress = () => {
+    setTriggerRandom(true);
+  };
 
   return (
     <View style={styles.container}>
@@ -59,7 +64,6 @@ export default function Index() {
       />
       <Button title="Search" onPress={() => fetchInfo()} />
 
-      {/* Display loading spinner if data is being fetched */}
       {loading && (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#0000ff" />
@@ -90,6 +94,10 @@ export default function Index() {
       ) : (
         !loading && <Text>Invalid Pokémon Name</Text>
       )}
+
+      <TouchableOpacity onPress={handleLogoPress}>
+        <Image source={logo} style={styles.logo} />
+      </TouchableOpacity>
     </View>
   );
 }
