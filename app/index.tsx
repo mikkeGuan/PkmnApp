@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { BASE_URL } from "@/utils/utils"; 
 import styles from "@/styles";
 import typeColors from "./components/typecolors";
+import {LinearGradient} from 'expo-linear-gradient';
 
 export default function Index() {
   const [pokemonName, setPokemonName] = useState(""); 
@@ -53,8 +54,17 @@ export default function Index() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Pokemon Center</Text>
 
+    <TouchableOpacity onPress={handleLogoPress}>
+        <Image source={logo} style={styles.logo} />
+      </TouchableOpacity>
+      
+      
+      <LinearGradient
+ colors={["#D5F5E3", "#90EE90", "#00FF7F"]} 
+ >
+        <Text style={styles.header}>Pokemon Center</Text>
+      </LinearGradient>
       <TextInput
         placeholder="Enter Pokémon Name"
         value={pokemonName}
@@ -95,9 +105,8 @@ export default function Index() {
         !loading && <Text>Invalid Pokémon Name</Text>
       )}
 
-      <TouchableOpacity onPress={handleLogoPress}>
-        <Image source={logo} style={styles.logo} />
-      </TouchableOpacity>
+      
     </View>
+    
   );
 }

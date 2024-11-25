@@ -3,15 +3,16 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     flex: 1,
-    backgroundColor: "lightblue",
+    backgroundColor: "lightgreen",
   },
   input: {
     width: 200,
     height: 40,
     borderColor: "gray",
     borderWidth: 1,
+    marginVertical: 10,
   },
   pokemonImage: {
     width: 200,
@@ -26,11 +27,11 @@ const styles = StyleSheet.create({
 },
   pokemonName: {
     fontWeight: "bold",
-    fontSize: 16,  },
+    fontSize: 16, 
+   },
     logo: {
-      width: 100,
-      height: 100,
-      marginTop: 50,
+      width: 80,
+      height: 80,
     },
 
     loadingContainer: {
@@ -43,12 +44,16 @@ const styles = StyleSheet.create({
       left: 0,
       right: 0,
     },      
-        header: {
-      fontSize: 40, 
-      fontWeight: 'bold',
-      marginBottom: 10, 
-      color: '#c85048'
+    header: {
+      fontSize: 40,
+      fontWeight: "bold",
+      marginBottom: 10,
+      color: "#ffffff", 
+      textShadowColor: "rgba(0, 0, 0, 0.75)",
+      textShadowOffset: { width: -1, height: 1 },
+      textShadowRadius: 10,
     },
+  
 });
 
 export default styles;
