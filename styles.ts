@@ -17,8 +17,7 @@ const styles = StyleSheet.create({
   pokemonImage: {
     width: 200,
     height: 200,
-    borderColor: "gray",
-    borderWidth: 3,
+    borderWidth: 2,
   },
   pokemonType:{
     color: "gray",

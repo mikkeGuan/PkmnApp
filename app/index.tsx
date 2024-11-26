@@ -10,12 +10,23 @@ export default function Index() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [triggerRandom, setTriggerRandom] = useState(false); 
+  const [clickCount, setClickCount] = useState(0);
   const logo = require("../assets/logo.png");
 
+  // Function to handle image press if pressed 10 times turns to shiny
+ 
+   const handleImagePress = () => {
+    setClickCount((prev) => prev + 1);
+  };
+  const imageUri =
+  clickCount >= 20
+    ? data?.sprites?.front_shiny 
+    : data?.sprites?.front_default;
   // Fetch information based on name or ID
   const fetchInfo = async (nameOrId?: string) => {
     const query = nameOrId || pokemonName.toLowerCase();
     if (!query) return;
+    setClickCount(0);
 
     setLoading(true); 
 
@@ -38,8 +49,10 @@ export default function Index() {
     await fetchInfo(randomId.toString());
   };
 
-  const getTypeColor = (type: string) => typeColors[type] || "black";
-
+  const getTypeColor = (type) => typeColors[type] || "black";
+  const primaryType = data?.types?.[0]?.type?.name || "normal";
+  const borderColor = getTypeColor(primaryType);
+  
   // Automatically fetch random Pokémon when `triggerRandom` is set to true
   useEffect(() => {
     if (triggerRandom) {
@@ -95,10 +108,14 @@ export default function Index() {
             </Text>
           ))}
           <View>
+            <TouchableOpacity onPress={handleImagePress}>
             <Image
-              source={{ uri: data.sprites.front_default }}
-              style={styles.pokemonImage}
+              source={{ uri: imageUri }}
+              style={[styles.pokemonImage,
+                {borderColor}
+              ]}
             />
+            </TouchableOpacity>
           </View>
         </>
       ) : (
