@@ -1,45 +1,59 @@
-import { Text, View, Image, TextInput, Button, ActivityIndicator, TouchableOpacity } from "react-native";
-import { useState, useEffect } from "react";
-import { BASE_URL } from "@/utils/utils"; 
+import { useEffect } from "react";
+import {
+  Text,
+  View,
+  Image,
+  TextInput,
+  Button,
+  ActivityIndicator,
+  TouchableOpacity,
+} from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+
+import { BASE_URL } from "@/utils/utils";
+import { getTypeColor } from "./components/typecolors";
+import { usePokemonState } from "@/utils/customHooks";
+
 import styles from "@/styles";
-import typeColors from "./components/typecolors";
-import {LinearGradient} from 'expo-linear-gradient';
 
 export default function Index() {
-  const [pokemonName, setPokemonName] = useState(""); 
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [triggerRandom, setTriggerRandom] = useState(false); 
-  const [clickCount, setClickCount] = useState(0);
+  const {
+    pokemonName, setPokemonName,
+    data,setData,
+    loading,setLoading,
+    triggerRandom,
+    setTriggerRandom,
+    clickCount,
+    setClickCount,
+  } = usePokemonState();
   const logo = require("../assets/logo.png");
 
-  // Function to handle image press if pressed 10 times turns to shiny
- 
-   const handleImagePress = () => {
+  // Function to handle image press if pressed 20 times turns to shiny
+
+  const handleImagePress = () => {
     setClickCount((prev) => prev + 1);
   };
   const imageUri =
-  clickCount >= 20
-    ? data?.sprites?.front_shiny 
-    : data?.sprites?.front_default;
+    clickCount >= 20
+      ? data?.sprites?.front_shiny
+      : data?.sprites?.front_default;
   // Fetch information based on name or ID
   const fetchInfo = async (nameOrId?: string) => {
     const query = nameOrId || pokemonName.toLowerCase();
     if (!query) return;
     setClickCount(0);
-
-    setLoading(true); 
+    setLoading(true);
 
     try {
       const response = await fetch(`${BASE_URL}${query}`);
       if (!response.ok) throw new Error("Pokémon not found");
-      const data = await response.json(); 
-      setData(data); 
+      const data = await response.json();
+      setData(data);
     } catch (error) {
       console.error(error);
-      setData(null); 
+      setData(null);
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
@@ -49,10 +63,9 @@ export default function Index() {
     await fetchInfo(randomId.toString());
   };
 
-  const getTypeColor = (type) => typeColors[type] || "black";
   const primaryType = data?.types?.[0]?.type?.name || "normal";
   const borderColor = getTypeColor(primaryType);
-  
+
   // Automatically fetch random Pokémon when `triggerRandom` is set to true
   useEffect(() => {
     if (triggerRandom) {
@@ -67,15 +80,11 @@ export default function Index() {
 
   return (
     <View style={styles.container}>
-
-    <TouchableOpacity onPress={handleLogoPress}>
+      <TouchableOpacity onPress={handleLogoPress}>
         <Image source={logo} style={styles.logo} />
       </TouchableOpacity>
-      
-      
-      <LinearGradient
- colors={["#D5F5E3", "#90EE90", "#00FF7F"]} 
- >
+
+      <LinearGradient colors={["#D5F5E3", "#90EE90", "#00FF7F"]}>
         <Text style={styles.header}>Pokemon Center</Text>
       </LinearGradient>
       <TextInput
@@ -83,7 +92,7 @@ export default function Index() {
         value={pokemonName}
         onChangeText={(text) => setPokemonName(text)}
         style={styles.input}
-        onSubmitEditing={() => fetchInfo()} 
+        onSubmitEditing={() => fetchInfo()}
       />
       <Button title="Search" onPress={() => fetchInfo()} />
 
@@ -95,7 +104,9 @@ export default function Index() {
 
       {data && !loading ? (
         <>
-          <Text style={styles.pokemonName}>{data.name.toUpperCase()} #{data.id} </Text>
+          <Text style={styles.pokemonName}>
+            {data.name.toUpperCase()} #{data.id}{" "}
+          </Text>
           {data.types.map((t, index) => (
             <Text
               key={index}
@@ -109,21 +120,16 @@ export default function Index() {
           ))}
           <View>
             <TouchableOpacity onPress={handleImagePress}>
-            <Image
-              source={{ uri: imageUri }}
-              style={[styles.pokemonImage,
-                {borderColor}
-              ]}
-            />
+              <Image
+                source={{ uri: imageUri }}
+                style={[styles.pokemonImage, { borderColor }]}
+              />
             </TouchableOpacity>
           </View>
         </>
       ) : (
         !loading && <Text>Invalid Pokémon Name</Text>
       )}
-
-      
     </View>
-    
   );
 }

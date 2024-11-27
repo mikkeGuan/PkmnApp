@@ -19,4 +19,8 @@ const typeColors = {
     fairy: "#D685AD",
   };
 
+  
+  export const getTypeColor = (type: typeColor) => typeColors[type] || "black";
+
+
   export default typeColors
