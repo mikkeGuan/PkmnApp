@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -9,34 +9,35 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { usePokemonState } from "@/utils/customHooks";
+import AudioPlayer from "./components/audioPlayer";
 
 import { BASE_URL } from "@/utils/utils";
 import { getTypeColor } from "./components/typecolors";
-import { usePokemonState } from "@/utils/customHooks";
 
 import styles from "@/styles";
 
 export default function Index() {
   const {
     pokemonName, setPokemonName,
-    data,setData,
-    loading,setLoading,
-    triggerRandom,
-    setTriggerRandom,
-    clickCount,
-    setClickCount,
+    data, setData,
+    loading, setLoading,
+    triggerRandom, setTriggerRandom,
+    clickCount, setClickCount,
   } = usePokemonState();
+
   const logo = require("../assets/logo.png");
 
   // Function to handle image press if pressed 20 times turns to shiny
-
   const handleImagePress = () => {
     setClickCount((prev) => prev + 1);
   };
+
   const imageUri =
     clickCount >= 20
       ? data?.sprites?.front_shiny
       : data?.sprites?.front_default;
+
   // Fetch information based on name or ID
   const fetchInfo = async (nameOrId?: string) => {
     const query = nameOrId || pokemonName.toLowerCase();
@@ -80,9 +81,11 @@ export default function Index() {
 
   return (
     <View style={styles.container}>
+      
       <TouchableOpacity onPress={handleLogoPress}>
         <Image source={logo} style={styles.logo} />
       </TouchableOpacity>
+      <AudioPlayer />
 
       <LinearGradient colors={["#D5F5E3", "#90EE90", "#00FF7F"]}>
         <Text style={styles.header}>Pokemon Center</Text>
@@ -130,6 +133,7 @@ export default function Index() {
       ) : (
         !loading && <Text>Invalid Pokémon Name</Text>
       )}
+
     </View>
   );
 }
