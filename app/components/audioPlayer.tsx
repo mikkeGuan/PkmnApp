@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Button, View } from "react-native";
-import { Audio } from "expo-av"; // Import expo-av for audio handling
+import { View, TouchableOpacity } from "react-native";
+import { Audio } from "expo-av";
+import Icon from "react-native-vector-icons/FontAwesome5";
 
 const AudioPlayer = () => {
   const [sound, setSound] = useState<Audio.Sound | null>(null);
@@ -10,15 +11,15 @@ const AudioPlayer = () => {
   const playAudio = async () => {
     if (sound) {
       await sound.playAsync();
-      setIsPlaying(true); // Set the playing state to true
+      setIsPlaying(true);
     }
   };
 
-  // Function to stop the audio
-  const stopAudio = async () => {
+  // Function to pause the audio
+  const pauseAudio = async () => {
     if (sound) {
-      await sound.stopAsync();
-      setIsPlaying(false); // Set the playing state to false
+      await sound.pauseAsync();
+      setIsPlaying(false);
     }
   };
 
@@ -26,7 +27,8 @@ const AudioPlayer = () => {
   useEffect(() => {
     const loadAudio = async () => {
       const { sound } = await Audio.Sound.createAsync(
-        require("../../assets/nationalParkTheme.mp3") 
+        require("../../assets/nationalParkTheme.mp3"),
+        { isLooping: true }
       );
       setSound(sound);
     };
@@ -42,11 +44,10 @@ const AudioPlayer = () => {
 
   return (
     <View>
-      <Button
-        title={isPlaying ? "Stop Music" : "Play Music"} 
-        onPress={isPlaying ? stopAudio : playAudio}
-      />
-    </View> 
+      <TouchableOpacity onPress={isPlaying ? pauseAudio : playAudio}>
+        <Icon name={isPlaying ? "stop-circle" : "play-circle"} size={40} />
+      </TouchableOpacity>
+    </View>
   );
 };
 

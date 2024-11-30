@@ -19,11 +19,16 @@ import styles from "@/styles";
 
 export default function Index() {
   const {
-    pokemonName, setPokemonName,
-    data, setData,
-    loading, setLoading,
-    triggerRandom, setTriggerRandom,
-    clickCount, setClickCount,
+    pokemonName,
+    setPokemonName,
+    data,
+    setData,
+    loading,
+    setLoading,
+    triggerRandom,
+    setTriggerRandom,
+    clickCount,
+    setClickCount,
   } = usePokemonState();
 
   const logo = require("../assets/logo.png");
@@ -81,11 +86,12 @@ export default function Index() {
 
   return (
     <View style={styles.container}>
-      
       <TouchableOpacity onPress={handleLogoPress}>
         <Image source={logo} style={styles.logo} />
       </TouchableOpacity>
-      <AudioPlayer />
+      <View style={styles.musicButton}>
+        <AudioPlayer />
+      </View>
 
       <LinearGradient colors={["#D5F5E3", "#90EE90", "#00FF7F"]}>
         <Text style={styles.header}>Pokemon Center</Text>
@@ -133,7 +139,6 @@ export default function Index() {
       ) : (
         !loading && <Text>Invalid Pokémon Name</Text>
       )}
-
     </View>
   );
 }

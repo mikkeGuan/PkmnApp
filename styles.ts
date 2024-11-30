@@ -43,7 +43,11 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
   },
-
+  musicButton: {
+    position: "absolute",
+    bottom: 20, 
+    right: 20,  
+  },
   loadingContainer: {
     flex: 1,
     justifyContent: "center",
