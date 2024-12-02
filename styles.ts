@@ -10,9 +10,9 @@ const styles = StyleSheet.create({
   input: {
     width: 200,
     height: 40,
-    borderColor:"lightgreen",
+    borderColor: "#66cc66",
     borderWidth: 3,
-    borderRadius: 8,
+    borderRadius: 12,
     backgroundColor: "white",
     paddingHorizontal: 10,
     color: "darkgreen",
@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     borderWidth: 2,
+    borderRadius: 8,
   },
   pokemonType: {
     color: "gray",
@@ -36,17 +37,22 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   pokemonName: {
-    fontWeight: "bold",
-    fontSize: 16,
+    fontWeight: "700",
+    fontSize: 20, 
   },
   logo: {
     width: 80,
     height: 80,
+    marginBottom: 20,
   },
   musicButton: {
     position: "absolute",
     bottom: 20, 
     right: 20,  
+    backgroundColor: "#66cc66", 
+    borderRadius: 50,
+    padding: 10,
+    elevation: 5,
   },
   loadingContainer: {
     flex: 1,
@@ -57,6 +63,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
+    
   },
   header: {
     fontSize: 40,
@@ -66,6 +73,9 @@ const styles = StyleSheet.create({
     textShadowColor: "rgba(0, 0, 0, 0.75)",
     textShadowOffset: { width: -1, height: 1 },
     textShadowRadius: 10,
+    letterSpacing: 2,
+    textTransform: "uppercase", 
+    
   },
 });
 

@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   Text,
   View,
   Image,
   TextInput,
-  Button,
   ActivityIndicator,
   TouchableOpacity,
 } from "react-native";
+import { Button } from "react-native-paper";
+
 import { LinearGradient } from "expo-linear-gradient";
 import { usePokemonState } from "@/utils/customHooks";
-import AudioPlayer from "./components/audioPlayer";
+import AudioPlayer from "./components/AudioPlayer";
 
 import { BASE_URL } from "@/utils/utils";
 import { getTypeColor } from "./components/typecolors";
@@ -103,8 +104,14 @@ export default function Index() {
         style={styles.input}
         onSubmitEditing={() => fetchInfo()}
       />
-      <Button title="Search" onPress={() => fetchInfo()} />
-
+  <Button
+  mode="elevated"
+  onPress={() => fetchInfo()}
+  labelStyle={{ fontSize: 16 }}
+  icon={"magnify"}
+>
+  Search
+</Button>
       {loading && (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#0000ff" />
