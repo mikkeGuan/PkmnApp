@@ -5,7 +5,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
     flex: 1,
-    backgroundColor: "lightgreen",
   },
   input: {
     width: 200,
@@ -17,10 +16,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     color: "darkgreen",
     marginBottom: 10,
-    shadowColor: "black",
-    shadowOffset: { width: 1, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
     elevation: 2,
     margin: 10,
   },
@@ -70,9 +65,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 10,
     color: "#ffffff",
-    textShadowColor: "rgba(0, 0, 0, 0.75)",
-    textShadowOffset: { width: -1, height: 1 },
-    textShadowRadius: 10,
     letterSpacing: 2,
     textTransform: "uppercase", 
     

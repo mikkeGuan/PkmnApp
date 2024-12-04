@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Button } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native"; 
 
 import { LinearGradient } from "expo-linear-gradient";
 import { usePokemonState } from "@/utils/customHooks";
@@ -31,6 +32,8 @@ export default function Index() {
     clickCount,
     setClickCount,
   } = usePokemonState();
+
+  const navigation = useNavigation();
 
   const logo = require("../assets/logo.png");
 
@@ -79,14 +82,20 @@ export default function Index() {
       fetchRandomPokemon();
       setTriggerRandom(false); // Reset trigger
     }
-  }, [triggerRandom]); // Effect will re-run when `trigger` changes
+  }, [triggerRandom]);
 
   const handleLogoPress = () => {
     setTriggerRandom(true);
   };
 
   return (
+    <LinearGradient
+    colors={['#D5F5E3', '#A3D9A5', '#90EE90']} 
+    style={styles.container}
+  >
     <View style={styles.container}>
+    
+
       <TouchableOpacity onPress={handleLogoPress}>
         <Image source={logo} style={styles.logo} />
       </TouchableOpacity>
@@ -104,14 +113,14 @@ export default function Index() {
         style={styles.input}
         onSubmitEditing={() => fetchInfo()}
       />
-  <Button
-  mode="elevated"
-  onPress={() => fetchInfo()}
-  labelStyle={{ fontSize: 16 }}
-  icon={"magnify"}
->
-  Search
-</Button>
+      <Button
+        mode="elevated"
+        onPress={() => fetchInfo()}
+        labelStyle={{ fontSize: 16 }}
+        icon={"magnify"}
+      >
+        Search
+      </Button>
       {loading && (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#0000ff" />
@@ -147,5 +156,6 @@ export default function Index() {
         !loading && <Text>Invalid Pokémon Name</Text>
       )}
     </View>
+    </LinearGradient>
   );
 }
